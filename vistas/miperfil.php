@@ -1,18 +1,33 @@
+<?php
+
+
+include '../modelos/conexion.php';
+
+//INICIA LA SESION EN EL SISTEMA
+session_start();
+//SI EXISTEN DATOS PARA INICIAR LA SESION SE OBTIENEN LAS VARIABLES SIGUIENTES
+if (isset($_SESSION['nombreUsuario'])){
+  
+    $nombreU = $_SESSION['nombreUsuario'];
+    $IdUsuario = $_SESSION['UsuarioId'];
+    $rolUsuario= $_SESSION['rolUsuario']; 
+  
+}else{
+
+    header("location:../vistas/miperfil.php"); 
+
+}
+
+    
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Nasa Constructores</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
-    <link rel="stylesheet" href="../css/inicio.css">
-    <script src="https://kit.fontawesome.com/7e73ebaf62.js" crossorigin="anonymous"></script>
+<?php
+
+include "header/directorio.php"
+
+?>
 </head>
 <body>
     
@@ -37,35 +52,33 @@
             <p class="text-center">Se detalla información personal del usuario</p>
             <hr>
             <fieldset disabled>
+
+            <?php 
+                    $qusuario = "SELECT * FROM usuario WHERE id_usuario = '$IdUsuario'";
+                    $resultado = mysqli_query($conexion,$qusuario);
+                    $i =0;
+                    while($row = mysqli_fetch_array($resultado)){
+                    $i ++;
+
+            ?>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i> Nombre</span>
                 </div>
-                <input type="text" class="form-control" placeholder="Ingrese su Nombre" aria-label="Username" aria-describedby="basic-addon1">
+                <input type="text" class="form-control" placeholder="<?php echo $row['nombre'] ?>" aria-label="Username" aria-describedby="basic-addon1">
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i> Usuario</span>
                 </div>
-                <input type="text" class="form-control" placeholder="Ingrese su Correo Electronico" aria-label="Username" aria-describedby="basic-addon1">
-            </div>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Ingrese su Usuario" aria-label="Username" aria-describedby="basic-addon1">
+                <input type="text" class="form-control" placeholder="<?php echo $row['usuario'] ?>" aria-label="Username" aria-describedby="basic-addon1">
             </div>
             </fieldset>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Contraseña" aria-label="Username" aria-describedby="basic-addon1">
-                <button class="btn btn-warning">Editar</button>
-            </div>
+            <?php
+                    }
+            ?>
         </div>
     </div>
-    <br>
 
     <div class="jumbotron jumbotron-fluid">
   <div class="container">
@@ -73,27 +86,36 @@
     <p class="text-center">Se detalla información del estado de cuenta del usuario</p>
     <hr>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <div class="card bg bg-success text-light">
                 <div class="card-body">
                     <h3 class="card-title text-center"><b>Total de Ingresos</b></h3>
                     <hr>
                     <h3 class="card-text text-center">Q.</h3>
-                    <a href="ingresos.php" class="btn btn-primary"><i class="fas fa-search-plus"></i> Ver Más</a>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <div class="card bg bg-danger text-light">
                 <div class="card-body">
                     <h3 class="card-title text-center"><b>Total de Egresos</b></h3>
                     <hr>
                     <h3 class="card-text text-center">Q.</h3>
-                    <a href="egresos.php" class="btn btn-primary text-center"><i class="fas fa-search-plus"></i> Ver Más</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card bg bg-warning text-light">
+                <div class="card-body">
+                    <h3 class="card-title text-center"><b>Capital</b></h3>
+                    <hr>
+                    <h3 class="card-text text-center">Q.</h3>
                 </div>
             </div>
         </div>
     </div>
+    <br>
+    <button class="btn btn-outline-primary btn-block btn-lg"><i class="fas fa-file-pdf"></i> Obtener Estado de Cuenta</button>
   </div>
 </div>
     

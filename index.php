@@ -17,10 +17,10 @@
       </nav>
       
       <div class="wrapper">
-        <form class="form-signin">
+        <form class="form-signin" action="controladores/login.php" method="POST">
             <img class="imglogo" src="img/logo2.jpg" height="160px">       
           <h2 class="form-signin-heading text-center">Inicio de Sesión</h2>
-          <input type="text" class="form-control" name="username" placeholder="Ingrese Usuario" required="" autofocus="" />
+          <input type="text" class="form-control" name="usuario" placeholder="Ingrese Usuario" required="" autofocus="" />
           <input type="password" class="form-control" name="password" placeholder="Ingrese Contraseña" required=""/>      
           <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="fas fa-sign-in-alt"></i> Ingresar</button>   
         </form>
