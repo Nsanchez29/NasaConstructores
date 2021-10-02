@@ -1,0 +1,15 @@
+body{
+    /*background-color: #FFECD5;
+    background-color: #FF873E;*/
+    background-color: #EAC497;
+}
+.navbar{
+    -webkit-box-shadow: 0px 10px 13px -7px #000000, 0px 19px 12px -7px rgba(255,126,48,0.68); 
+    box-shadow: 0px 10px 13px -7px #000000, 0px 19px 12px -7px rgba(255,126,48,0.68);
+}
+
+.footer{
+    
+    color: black;
+}
+
