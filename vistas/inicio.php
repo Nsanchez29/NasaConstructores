@@ -83,7 +83,7 @@ include "header/directorio.php"
             <h1 class="display-6 text-center">Estado de Cuenta</h1>
                 <hr class="my-6">
                 <p class="text-center">Información de Estado de Cuenta</p>
-                <a class="btn btn-primary btn-block" href="#" role="button"><i class="fas fa-search-plus"></i> Ver más</a>
+                <a class="btn btn-primary btn-block" href="miperfil.php" role="button"><i class="fas fa-search-plus"></i> Ver más</a>
         </div>
     </div>
   </div>

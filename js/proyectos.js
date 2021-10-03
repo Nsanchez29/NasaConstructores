@@ -17,3 +17,23 @@ $(document).ready(function(){
     });
 
 });
+
+
+//Funcion Municipios Editar
+$(document).ready(function(){
+
+
+  $('#departamentosE').change(function(){
+    
+    var EditarId = $('#departamentosE').val();
+
+    $.get("../controladores/municipios.php", {paramid: EditarId})
+    .done(function(data){
+
+      $("#ListamunicipiosE").html(data);
+      //console.log("envia datos", data);
+
+    });
+  });
+
+});

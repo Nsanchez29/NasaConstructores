@@ -63,15 +63,15 @@ include "header/directorio.php"
       <th scope="col">Fecha Fin</th>
       <th scope="col">Contrato</th>
       <th scope="col">Precio</th>
-      <th scope="col">Generar PDF</th>
       <th scope="col">Editar</th>
       <th scope="col">Eliminar</th>
     </tr>
   </thead>
   <tbody>
   <?php 
-  $qproyecto = "SELECT p.id_proyecto as idproyecto, p.nombre as nombre, p.direccion as direccion, p.contrato as contrato, p.fecha_inicio as fechainicio, p.fecha_fin as fechafin,
-  p.precio as precio, c.nombre as cliente  FROM proyecto p
+  $qproyecto = "SELECT p.id_proyecto as idproyecto, p.nombre as nombre, p.departamento as departamento, p.municipio as municipio,
+    p.direccion as direccion, p.contrato as contrato, p.fecha_inicio as fechainicio, p.fecha_fin as fechafin,
+  p.precio as precio, c.nombre as cliente, p.nog as nog  FROM proyecto p
   inner join cliente as c on p.id_cliente = c.id_cliente
   WHERE p.estado !=0";
   $resultado = mysqli_query($conexion,$qproyecto);
@@ -88,15 +88,14 @@ include "header/directorio.php"
       <td><?php echo $row['fechafin'] ?></td>
       <td><?php echo $row['contrato'] ?></td>
       <td><?php echo $row['precio'] ?></td>
-      <td>
-          <button class="btn btn-primary"><i class="fas fa-file-pdf"></i></button>
-      </td>
+    
       <td>
       <div role="group" aria-label="Third group">
         <button type="button" id="botonEditar" class="btn btn-warning" data-toggle="modal" data-target="#EditarProyectoModal"
-        data-id="<?php echo $row['idproyecto'] ?>" data-nombre="<?php echo $row['nombre'] ?>" 
+        data-id="<?php echo $row['idproyecto'] ?>" data-nombre="<?php echo $row['nombre'] ?>"  
         data-direccion="<?php echo $row['direccion']?>" data-fechain="<?php echo $row['fechainicio']?>" 
-        data-fechaf="<?php echo $row['fechafin']?>" data-contrato="<?php echo $row['contrato']?>" data-precio="<?php echo $row['precio']?>">
+        data-fechaf="<?php echo $row['fechafin']?>" data-contrato="<?php echo $row['contrato']?>" data-precio="<?php echo $row['precio']?>"
+        data-nog="<?php echo $row['nog'] ?>">
         <i class="fas fa-pencil-alt"></i>
         </button>
       </td>
@@ -154,6 +153,7 @@ include "header/directorio.php"
                     <span class="input-group-text"><i class="fas fa-map"></i></span>
                 </div>
                 <select class="form-control" id="departamentos" name="departamentos">
+                  <option value="0">Seleccione Departamento</option>
                     <?php include '../controladores/departamentos.php' ?>
                 </select>
             </div>
@@ -254,7 +254,8 @@ include "header/directorio.php"
         </button>
       </div>
       <div class="modal-body">
-        <form action="../controladores/NewProyecto.php" method="POST">
+        <form action="../controladores/UpdateProyecto.php" method="POST">
+        <input hidden type="text" class="form-control" id="idPE" name="idPE">
           <!--NOMBRE PROYECTO-->
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -268,6 +269,7 @@ include "header/directorio.php"
                     <span class="input-group-text"><i class="fas fa-map"></i></span>
                 </div>
                 <select class="form-control" id="departamentosE" name="departamentosE">
+                      <option value="0">Seleccione Departamento</option>
                     <?php include '../controladores/departamentos.php' ?>
                 </select>
             </div>
@@ -397,15 +399,21 @@ include "header/directorio.php"
 $(document).on("click", "#botonEditar", function (){
     var id =$(this).data('id');
     var nombre =$(this).data('nombre');
-    var telefono =$(this).data('telefono');
     var direccion =$(this).data('direccion');
-    var nit =$(this).data('nit');
+    var contrato =$(this).data('contrato');
+    var precio =$(this).data('precio');
+    var fechaini =$(this).data('fechain');
+    var fechafin =$(this).data('fechaf');
+    var nog =$(this).data('nog');
 
-    $("#idCliente").val(id);
-    $("#nombreEditar").val(nombre);
-    $("#telefonoEditar").val(telefono);
-    $("#direccionEditar").val(direccion);
-    $("#nitEditar").val(nit);
+    $("#idPE").val(id);
+    $("#nombrePE").val(nombre);
+    $("#direccionPE").val(direccion);
+    $("#precioPE").val(precio);
+    $("#numContratoE").val(contrato);
+    $("#fechaInicioE").val(fechaini);
+    $("#fechaFinE").val(fechafin);
+    $("#nogPE").val(nog);
 
   })
 

@@ -61,19 +61,18 @@ include "header/directorio.php"
                     $i ++;
 
             ?>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i> Nombre</span>
-                </div>
-                <input type="text" class="form-control" placeholder="<?php echo $row['nombre'] ?>" aria-label="Username" aria-describedby="basic-addon1">
-            </div>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i> Usuario</span>
-                </div>
-                <input type="text" class="form-control" placeholder="<?php echo $row['usuario'] ?>" aria-label="Username" aria-describedby="basic-addon1">
-            </div>
+            <h5 class="text-center">Nombre del Usuario</h5>
+            <h1 class="display-4 text-center"><b><?php echo $row['nombre'] ?></b></h1>
+            <h5 class="text-center">Usuario registrado</h5>
+            <h1 class="display-4 text-center"><b><?php echo $row['usuario'] ?></b></h1>
             </fieldset>
+            
+            <div style="margin-left: 41%;">
+            <button class="btn btn-warning" id="botonEditarContra" data-toggle="modal" data-target="#EditarContraModal" 
+            data-id="<?php echo $row['id_usuario']?>" data-nombre="<?php echo $row['nombre']?>"
+            data-usuario="<?php echo $row['usuario']?>">
+            <i class="fas fa-pencil-alt"></i> Cambiar Contraseña</button>
+            </div>
             <?php
                     }
             ?>
@@ -91,7 +90,19 @@ include "header/directorio.php"
                 <div class="card-body">
                     <h3 class="card-title text-center"><b>Total de Ingresos</b></h3>
                     <hr>
-                    <h3 class="card-text text-center">Q.</h3>
+                    <?php 
+                    $qingreso = "SELECT SUM(monto) as ingreso FROM transferencia WHERE id_usuariodest = '$IdUsuario'";
+                    $resultado = mysqli_query($conexion,$qingreso);
+                    
+                    if($rowIngreso = mysqli_fetch_array($resultado)){
+
+                        $ing= $rowIngreso['ingreso'];
+
+                    }
+                    ?>
+                    <h3 class="card-text text-center">Q.
+                        <?php echo $ing; ?>
+                    </h3>
                 </div>
             </div>
         </div>
@@ -100,7 +111,20 @@ include "header/directorio.php"
                 <div class="card-body">
                     <h3 class="card-title text-center"><b>Total de Egresos</b></h3>
                     <hr>
-                    <h3 class="card-text text-center">Q.</h3>
+                    <?php 
+                    $qegreso = "SELECT SUM(monto) as egreso FROM egreso WHERE id_usuario = '$IdUsuario'";
+                    $resultado = mysqli_query($conexion,$qegreso);
+                    
+                    if($rowEgreso = mysqli_fetch_array($resultado)){
+
+                        $eg= $rowEgreso['egreso'];
+
+                    }
+                    ?>
+                    <h3 class="card-text text-center">Q.
+                        <?php echo $eg;?>
+                    </h3>
+                    
                 </div>
             </div>
         </div>
@@ -109,13 +133,25 @@ include "header/directorio.php"
                 <div class="card-body">
                     <h3 class="card-title text-center"><b>Capital</b></h3>
                     <hr>
-                    <h3 class="card-text text-center">Q.</h3>
+                    <h3 class="card-text text-center">Q.
+                        <?php
+                            $capital = $ing - $eg;
+
+                            echo $capital;
+                        ?>
+                    </h3>
                 </div>
             </div>
         </div>
     </div>
     <br>
-    <button class="btn btn-outline-primary btn-block btn-lg"><i class="fas fa-file-pdf"></i> Obtener Estado de Cuenta</button>
+    
+    <button class="btn btn-outline-primary btn-block btn-lg"
+    id="botongenerarPdf" type="button"
+    data-toggle="modal" data-target="#GenerarPDFModal"
+    data-idU="<?php echo $IdUsuario?>"
+    data-nom="<?php echo $nombreU?>">
+        <i class="fas fa-file-pdf"></i> Obtener Estado de Cuenta</button>
   </div>
 </div>
     
@@ -133,6 +169,83 @@ include "header/directorio.php"
      
 
 
+      <!-- Modal Editar Contraseña -->
+<div class="modal fade" id="EditarContraModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <img src="../img/logo2.jpg" height="85px" width="130px">
+        <h5 class="modal-title" style="margin-left: 10%; padding: 20px;" id="exampleModalLabel"> Modificar Contraseña</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form action="../controladores/UpdateContra.php" method="POST">
+        <input hidden type="text" class="form-control" id="idUsuario" placeholder="" name="idUsuario">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <input disabled type="text" class="form-control" id="nombreEditar" name="nombreEditar" placeholder="Ingrese su Nombre" >
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <input disabled type="text" class="form-control" id="usuarioEditar" name="usuarioEditar" placeholder="Ingrese su Usuario">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                <input type="password" class="form-control" id="contrasena" name="contrasenaEditar" placeholder="Ingrese su Contraseña">
+            </div>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-window-close"></i> Cancelar</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+
+        </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- Modal Generar PDF -->
+<div class="modal fade" id="GenerarPDFModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <img src="../img/logo2.jpg" height="85px" width="130px">
+                    <h5 class="modal-title" style="margin-left: 10%; padding: 20px;" id="exampleModalLabel">
+                        Generar PDF</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="../controladores/PdfEstadoCuenta.php" method="POST">
+                        <input hidden type="text" class="form-control" id="idUs" placeholder="" name="idUs">
+                        <input hidden type="text" class="form-control" id="nomUs" placeholder="" name="nomUs">
+                        <div class="input-group mb-3" style="justify-content: center; align-items: center;">
+                            <div class="input-group-prepend">
+                                <img src="../img/pdf.png" width="100px">
+                            </div>
+                        </div>
+                        <h4 class="text-center">¿Desea Generar el Estado de Cuenta?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+                            class="fas fa-window-close"></i> Cancelar</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-file-pdf"></i> Generar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -141,6 +254,33 @@ include "header/directorio.php"
 
 
 <script type="text/javascript">
+
+
+//Boton Editar
+$(document).on("click", "#botonEditarContra", function (){
+    var id =$(this).data('id');
+    var nombre =$(this).data('nombre');
+    var usuario =$(this).data('usuario');
+
+    $("#idUsuario").val(id);
+    $("#nombreEditar").val(nombre);
+    $("#usuarioEditar").val(usuario);
+
+  })
+
+  //Boton Usuario
+  $(document).on("click", "#botongenerarPdf", function() {
+        var idUsuarioPDF = $(this).data('idu');
+        var nomUsuarioPDF = $(this).data('nom');
+
+        $("#idUs").val(idUsuarioPDF);
+        $("#nomUs").val(nomUsuarioPDF);
+
+    })
+
+
+
+    //Datatable
     $(document).ready(function() {
     $('#usuarios').DataTable({
         "language": {
