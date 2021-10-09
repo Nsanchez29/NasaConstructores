@@ -53,7 +53,7 @@ include "header/directorio.php"
         <br>
         <br>
 
-        <table id="transferencias" class="table text-center">
+        <table id="transferencias" class="table text-center table-responsive-lg">
             <thead>
                 <tr>
                 <tr>

@@ -120,9 +120,20 @@ include "header/directorio.php"
                         $eg= $rowEgreso['egreso'];
 
                     }
+
+                    $qtansf = "SELECT SUM(monto) as transf FROM transferencia WHERE id_usuario = '$IdUsuario'";
+                    $resultadoT = mysqli_query($conexion,$qtansf);
+                    
+                    if($rowTrans = mysqli_fetch_array($resultadoT)){
+
+                        $Transf= $rowTrans['transf'];
+
+                    }
+
+                        $egreso = $eg + $Transf;
                     ?>
                     <h3 class="card-text text-center">Q.
-                        <?php echo $eg;?>
+                        <?php echo $egreso;?>
                     </h3>
                     
                 </div>
@@ -135,7 +146,7 @@ include "header/directorio.php"
                     <hr>
                     <h3 class="card-text text-center">Q.
                         <?php
-                            $capital = $ing - $eg;
+                            $capital = $ing - $egreso;
 
                             echo $capital;
                         ?>

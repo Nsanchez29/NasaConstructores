@@ -13,6 +13,7 @@
             $nog = $_POST['nogP'];
             $cliente = $_POST['cliente'];
             $estado = 1;
+            $estadoproyecto = 1;
             
             /*echo $nombre;
             echo ' ';
@@ -52,9 +53,9 @@
 
             }else{
 
-                $sql = "INSERT INTO proyecto (id_cliente, nombre, municipio, departamento, direccion, precio, contrato, fecha_inicio, fecha_fin, nog, estado) 
+                $sql = "INSERT INTO proyecto (id_cliente, nombre, municipio, departamento, direccion, precio, contrato, fecha_inicio, fecha_fin, nog, estadoproyecto, estado) 
                                     VALUES ('$cliente', '$nombre', '$municipio', '$departamento', '$direccion' , '$precio' , '$numContrato' ,
-                                     '$fechaInicio', '$fechaFin', '$nog', '$estado')";
+                                     '$fechaInicio', '$fechaFin', '$nog', '$estadoproyecto', '$estado')";
                     if (mysqli_query($conexion, $sql)) {
                         echo "<script>
                         alert('Proyecto creado exitosamente'); 

@@ -50,7 +50,7 @@ include "header/directorio.php"
     <br>
     <br>
 
-    <table id="clientes" class="table text-center">
+    <table id="clientes" class="table text-center table-responsive-lg">
   <thead>
     <tr>
       <th scope="col">#</th>

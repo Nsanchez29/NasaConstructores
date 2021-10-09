@@ -52,7 +52,7 @@ include "header/directorio.php"
     <br>
     <br>
 
-    <table id="proy" class="table text-center">
+    <table id="proy" class="table text-center table-responsive-lg">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -63,6 +63,7 @@ include "header/directorio.php"
       <th scope="col">Fecha Fin</th>
       <th scope="col">Contrato</th>
       <th scope="col">Precio</th>
+      <th scope="col">Estado Proyecto</th>
       <th scope="col">Editar</th>
       <th scope="col">Eliminar</th>
     </tr>
@@ -71,7 +72,7 @@ include "header/directorio.php"
   <?php 
   $qproyecto = "SELECT p.id_proyecto as idproyecto, p.nombre as nombre, p.departamento as departamento, p.municipio as municipio,
     p.direccion as direccion, p.contrato as contrato, p.fecha_inicio as fechainicio, p.fecha_fin as fechafin,
-  p.precio as precio, c.nombre as cliente, p.nog as nog  FROM proyecto p
+  p.precio as precio, c.nombre as cliente, p.nog as nog, p.estadoproyecto as estadoP  FROM proyecto p
   inner join cliente as c on p.id_cliente = c.id_cliente
   WHERE p.estado !=0";
   $resultado = mysqli_query($conexion,$qproyecto);
@@ -89,6 +90,17 @@ include "header/directorio.php"
       <td><?php echo $row['contrato'] ?></td>
       <td><?php echo $row['precio'] ?></td>
     
+      
+      <td>
+        <a class="btn 
+        <?php if($row['estadoP'] == 1){
+           echo "btn-success";}else{echo"btn-danger";} ?>
+             btn" href="../controladores/estadoProyecto.php?ProyectoId=<?php echo $row['idproyecto']  ?>">
+              <?php if($row['estadoP'] == 1){ 
+                echo "En Ejeccución";}
+                else{echo"Finalizado";} ?>
+                </a>
+      </td>
       <td>
       <div role="group" aria-label="Third group">
         <button type="button" id="botonEditar" class="btn btn-warning" data-toggle="modal" data-target="#EditarProyectoModal"

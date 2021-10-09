@@ -51,7 +51,7 @@ include "header/directorio.php"
     <br>
     <br>
 
-    <table id="egresos" class="table text-center">
+    <table id="egresos" class="table text-center table-responsive-lg">
   <thead>
     <tr>
     <tr>

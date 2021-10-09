@@ -52,7 +52,7 @@ include "header/directorio.php"
     <br>
     <br>
 
-    <table id="usuarios" class="table text-center">
+    <table id="usuarios" class="table text-center table-responsive-lg">
   <thead>
     <tr>
       <th scope="col">#</th>
